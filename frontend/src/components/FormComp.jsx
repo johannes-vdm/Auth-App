@@ -1,6 +1,8 @@
-import React from 'react';
-import PostsDisplay from '../components/PostsDisplay'
+import React
+, { useState }
+  from 'react';
 
+import PostsDisplay from '../components/PostsDisplay'
 import axios from 'axios';
 
 const FormComp = (props) => {
@@ -11,64 +13,82 @@ const FormComp = (props) => {
     const username = e.target.username.value;
     const password = e.target.password.value;
 
-    let data = {
+    const data = {
       'username': username,
       'password': password
     }
-    console.log(data);
 
-
-    let config = {
+    const config = {
       headers: {
         'Content-Type': 'application/json',
         'Accept': '*/*'
       }
     }
 
-    const axios = require('axios')
-
+    //ANCHOR [core axios call]
+    const axios = require('axios');
     axios.post('http://localhost:4000/users/authenticate',
       data,
       config,
     )
       .then(function (response) {
+        console.log({ response });
+
         const id = response.data.id;
         const token = response.data.jwtToken;
-
         props.setUserDetails({ userId: id, jwtToken: token });
-      })
-      .catch(
-        // err => props.setError(err)
-        err => console.error(err.response)
-      );
 
+      })
+      .catch(function (error) {
+        if (error.response) {
+          props.setError(`Status error:${error.response.status}`);
+          if (error.response.data.message) {
+            props.setError(error.response.data.message);
+          }
+        } else if (error.request) {
+          // TODO [create loader here]
+          props.setError('The request was made but no response was received. Check if your server is online.');
+        } else if (error.response.data.message) {
+          props.setError(error.response.data.message);
+        } else if (error.response.data) {
+          props.setError('Server responded with error data. Please check console.');
+          console.error(error.response.data);
+        } else {
+          props.setError('Uncaught trigger.');
+        }
+      });
   }
+
   return (
     <form onSubmit={handleSubmit}>
-      <center>
-        <label>
-          Username
-          <br />
-          <input
-            type="text"
-            name="username"
-          />
+      <label>
+        Username
+        <br />
+        <input
+          type="text"
+          name="username"
+          required
+        />
 
-        </label>
+      </label>
+      <br />
+      <label>
+        Password
         <br />
-        <label>
-          Password
-          <br />
-          <input
-            type="password"
-            name="password"
-          />
-        </label>
-        <br />
-        <input type="submit" value="Submit" />
-      </center>
+        <input
+          type="password"
+          name="password"
+        />
+      </label>
+      <br />
+      <input
+        type="submit"
+        value="Sign In"
+        required
+      />
     </form>
   );
-};
+}
+
 
 export default FormComp;

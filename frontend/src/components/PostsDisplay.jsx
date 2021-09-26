@@ -5,8 +5,7 @@ import React
 import axios from "axios";
 
 const PostsDisplay = (props) => {
-
-  let [postData, setPostData] = React.useState('');
+  const [postData, setPostData] = React.useState();
 
   const jwtToken = props.userDetails.jwtToken;
   const userId = props.userDetails.userId;
@@ -19,20 +18,30 @@ const PostsDisplay = (props) => {
     }
   }
 
+  //ANCHOR [post axios call]
   const axios = require('axios');
-
   axios.get(`http://localhost:4000/users/posts/${userId}`, config)
     .then(function (response) {
       console.log("GET");
       console.log(response.data);
-
-      setPostData(response.data);
     })
-    .catch(err => console.error(err.response));
-
+    .catch(function (error) {
+      if (error.response) {
+        console.error(`Status error:${error.response.status}`);
+      } else if (error.request) {
+        console.error('The request was made but no response was received. Check if your server is online.');
+      } else if (error.response.data.message) {
+        console.error(error.response.data.message);
+      } else if (error.response.data) {
+        console.error('Server responded with error data. Please check console.');
+        console.error(error.response.data);
+      } else {
+        console.error('Uncaught trigger.');
+      }
+    });
   return (
-    <center><p>{postData}</p></center>
-  )
+    <p>{postData}</p>
+  );
 }
 
 export default PostsDisplay;

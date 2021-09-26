@@ -6,7 +6,7 @@
     "lastName": "test",
     "username": "test",
     "password": "test",
-    "post": "Hello I test"
+    "post": "Hello I am test"
 }
 ```
 ## POST
