@@ -22,8 +22,7 @@ const PostsDisplay = (props) => {
   const axios = require('axios');
   axios.get(`http://localhost:4000/users/posts/${userId}`, config)
     .then(function (response) {
-      console.log("GET");
-      console.log(response.data);
+      setPostData(response.data);
     })
     .catch(function (error) {
       if (error.response) {

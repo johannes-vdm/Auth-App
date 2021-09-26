@@ -40,13 +40,13 @@ const FormComp = (props) => {
 
       })
       .catch(function (error) {
+        // TODO [create loader here]
         if (error.response) {
           props.setError(`Status error:${error.response.status}`);
           if (error.response.data.message) {
             props.setError(error.response.data.message);
           }
         } else if (error.request) {
-          // TODO [create loader here]
           props.setError('The request was made but no response was received. Check if your server is online.');
         } else if (error.response.data.message) {
           props.setError(error.response.data.message);

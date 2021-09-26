@@ -10,12 +10,12 @@ function App() {
 
   if (userDetails) {
     return (
-      <>
+      <center>
         <PostsDisplay
           userDetails={userDetails}
           setError={setError}
         />
-      </>
+      </center>
     );
   } else {
     return (
