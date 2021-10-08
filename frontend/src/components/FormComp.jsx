@@ -26,7 +26,6 @@ const FormComp = (props) => {
     }
 
     //ANCHOR [core axios call]
-    const axios = require('axios');
     axios.post('http://localhost:4000/users/authenticate',
       data,
       config,
@@ -40,7 +39,6 @@ const FormComp = (props) => {
 
       })
       .catch(function (error) {
-        // TODO [create loader here]
         if (error.response) {
           props.setError(`Status error:${error.response.status}`);
           if (error.response.data.message) {
